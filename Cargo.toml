@@ -1,0 +1,13 @@
+[package]
+name = "coin-collector"
+version = "0.1.0"
+authors = ["LukeEuler <luke16times@gmail.com>"]
+
+[dependencies]
+time = "0.1"
+rand = "0.3"
+slog = "2.1.1"
+slog-term = "2.3.0"
+bitcoin = "0.10"
+secp256k1 = "0.6"
+pbr = "1.0.0"
