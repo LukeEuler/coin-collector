@@ -33,3 +33,10 @@ pub fn bitcoin_key_address(path: &Path, num: i32) {
     let end = now();
     println!("generate {}, {:?}", num, end - begin);
 }
+
+pub fn sample() {
+    let mut tx = bitcoin::transaction::Transaction::new();
+    let pre_hex = "162393e009c799f9700d9c0c196a7b9a06d0f1a453d8d1a3c3b67939b7f53e34";
+    let result = tx.add_vin(pre_hex, 1);
+    println!("{:?}", result)
+}

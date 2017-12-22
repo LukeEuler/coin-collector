@@ -10,51 +10,31 @@ use self::rand::os::OsRng;
 use self::bitcoin::network::constants::Network::Bitcoin;
 
 pub fn generate_key_address() -> (String, String) {
-    let mut rng: OsRng;
-    match OsRng::new() {
-        Ok(o) => {
-            rng = o;
-        }
-        Err(e) => {
-            panic!(e)
-        }
-    }
+    let mut rng = match OsRng::new() {
+        Ok(o) => { o }
+        Err(e) => panic!(e)
+    };
     let secp: Secp256k1 = Secp256k1::with_caps(ContextFlag::SignOnly);
     let secret_key = SecretKey::new(&secp, &mut rng);
     let private_key = Privkey::from_key(Bitcoin, secret_key, true);
 
-    let address: Address;
-    match private_key.to_address(&secp) {
-        Ok(a) => {
-            address = a;
-        }
-        Err(e) => {
-            panic!(e)
-        }
-    }
+    let address = match private_key.to_address(&secp) {
+        Ok(a) => { a }
+        Err(e) => panic!(e)
+    };
     (private_key.to_base58check(), address.to_base58check())
 }
 
 pub fn key_address_check(wif: &str, address: &str) -> bool {
     let secp: Secp256k1 = Secp256k1::with_caps(ContextFlag::SignOnly);
-    let private_key: Privkey;
-    match FromBase58::from_base58check(wif) {
-        Ok(p) => {
-            private_key = p;
-        }
-        Err(e) => {
-            panic!(e)
-        }
-    }
-    let addr: Address;
-    match private_key.to_address(&secp) {
-        Ok(a) => {
-            addr = a;
-        }
-        Err(e) => {
-            panic!(e)
-        }
-    }
+    let private_key: Privkey = match FromBase58::from_base58check(wif) {
+        Ok(p) => { p }
+        Err(e) => panic!(e)
+    };
+    let addr = match private_key.to_address(&secp) {
+        Ok(a) => { a }
+        Err(e) => panic!(e)
+    };
     addr.to_base58check() == address
 }
 
