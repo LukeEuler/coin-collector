@@ -1,20 +1,20 @@
 extern crate bitcoin;
 extern crate secp256k1;
 extern crate rand;
+extern crate time;
 
-use self::bitcoin::util::address::{Privkey, Address};
+use self::bitcoin::util::address::{Privkey};
 use self::bitcoin::util::base58::{FromBase58, ToBase58};
 use self::secp256k1::{Secp256k1, ContextFlag};
 use self::secp256k1::key::SecretKey;
 use self::rand::os::OsRng;
 use self::bitcoin::network::constants::Network::Bitcoin;
 
-pub fn generate_key_address() -> (String, String) {
+pub fn generate_key_address(secp: &mut Secp256k1) -> (String, String) {
     let mut rng = match OsRng::new() {
         Ok(o) => { o }
         Err(e) => panic!(e)
     };
-    let secp: Secp256k1 = Secp256k1::with_caps(ContextFlag::SignOnly);
     let secret_key = SecretKey::new(&secp, &mut rng);
     let private_key = Privkey::from_key(Bitcoin, secret_key, true);
 

@@ -1,12 +1,12 @@
 extern crate bitcoin;
 
-use self::bitcoin::blockdata::transaction::{Transaction as tx, TxIn, TxOut};
+use self::bitcoin::blockdata::transaction::{Transaction as tx, TxIn};
 use self::bitcoin::blockdata::script::Script;
 use self::bitcoin::util::hash::Sha256dHash;
 
-const TX_VERSION: i32 = 1;
+//const TX_VERSION: i32 = 1;
 const MAX_TX_IN_SEQUENCE_NUM: u32 = 0xffffffff;
-const MAX_PREV_OUT_INDEX: u32 = 0xffffffff;
+//const MAX_PREV_OUT_INDEX: u32 = 0xffffffff;
 
 pub struct Transaction {
     content:  tx

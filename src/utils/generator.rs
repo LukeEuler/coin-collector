@@ -1,5 +1,6 @@
 extern crate pbr;
 extern crate time;
+extern crate secp256k1;
 
 use std::path::Path;
 use std::fs::File;
@@ -8,6 +9,7 @@ use std::io::prelude::*;
 use self::pbr::ProgressBar;
 use self::time::now;
 use super::super::bitcoin;
+use self::secp256k1::{Secp256k1, ContextFlag};
 
 
 pub fn bitcoin_key_address(path: &Path, num: i32) {
@@ -16,10 +18,11 @@ pub fn bitcoin_key_address(path: &Path, num: i32) {
 
     let mut pb = ProgressBar::new(num as u64);
     pb.format("[=>-]");
+    let mut secp: Secp256k1 = Secp256k1::with_caps(ContextFlag::SignOnly);
 
     let begin = now();
     for _ in 1..num + 1 {
-        let (key, address) = bitcoin::key::generate_key_address();
+        let (key, address) = bitcoin::key::generate_key_address(&mut secp);
         let line = key + " " + &address + "\n";
         out.write_all(line.as_bytes())
             .ok()
